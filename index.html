@@ -10,18 +10,23 @@
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg: #fefefd;
-    --paper: #ffffff;
-    --line: #111111;
-    --line-soft: #d8d6d0;
-    --surface: #f6f5f2;
-    --text: #111111;
-    --text-muted: #6b6a65;
-    --text-faint: #a3a19a;
-    --ink: #1a3fb8;
-    --red: #a3241f;
-    --amber: #8a5a0b;
-    --green-ok: #1f6b3f;
+    --bg: #f6f4ec;
+    --paper: #fffdf7;
+    --line: #14120d;
+    --line-soft: #ded7c2;
+    --surface: #efeadb;
+    --text: #17150f;
+    --text-muted: #635c4b;
+    --text-faint: #9a927a;
+    --highlight: #ffd93d;
+    --highlight-soft: #fff3c4;
+    --ink: #1d3fae;
+    --red: #b23a2e;
+    --red-soft: #f6dcd6;
+    --amber: #a8681a;
+    --amber-soft: #f4e3c8;
+    --green-ok: #2c6e49;
+    --green-soft: #dcece0;
     --radius: 3px;
     --font-fa: 'Vazirmatn', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
@@ -39,7 +44,7 @@
   }
 
   a{ color: inherit; }
-  ::selection{ background: var(--line); color: #fff; }
+  ::selection{ background: var(--highlight); color: var(--text); }
 
   :focus-visible{
     outline: 2px solid var(--ink);
@@ -55,7 +60,7 @@
   /* ---------- top bar ---------- */
   .topbar{
     position: sticky; top:0; z-index: 20;
-    background: rgba(254,254,253,0.92);
+    background: rgba(246,244,236,0.92);
     backdrop-filter: blur(6px);
     border-bottom: 1px solid var(--line);
   }
@@ -71,8 +76,9 @@
     font-family: var(--font-mono);
     font-size: 11px;
     border: 1px solid var(--line);
-    padding: 2px 7px;
-    letter-spacing: 1px;
+    background: var(--highlight);
+    padding: 2px 8px;
+    letter-spacing: 0.5px;
   }
   .topnav{ display:flex; gap:26px; font-size: 14px; }
   .topnav a{ color: var(--text-muted); text-decoration:none; }
@@ -82,15 +88,17 @@
   .hero{
     padding: 76px 0 56px;
     border-bottom: 1px solid var(--line);
+    background:
+      linear-gradient(180deg, var(--highlight-soft), transparent 65%);
   }
   .stamp{
     font-family: var(--font-mono);
     font-size: 11.5px;
-    letter-spacing: 1.5px;
-    color: var(--text-muted);
-    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text);
     display:inline-flex; align-items:center; gap:8px;
-    border: 1px solid var(--line-soft);
+    border: 1px solid var(--line);
+    background: var(--paper);
     padding: 5px 12px;
     margin-bottom: 26px;
   }
@@ -98,7 +106,7 @@
 
   h1{
     font-size: clamp(30px, 4.6vw, 48px);
-    line-height: 1.35;
+    line-height: 1.4;
     margin: 0 0 20px;
     font-weight: 900;
     max-width: 16ch;
@@ -107,7 +115,7 @@
   .redact-word{
     position: relative;
     display: inline-block;
-    padding: 0 8px;
+    padding: 2px 10px;
     background: var(--line);
     color: var(--bg);
   }
@@ -129,23 +137,24 @@
     cursor: pointer;
     text-decoration:none;
     display:inline-flex; align-items:center; gap:8px;
-    transition: background .15s ease, color .15s ease;
+    transition: background .15s ease, color .15s ease, transform .15s ease;
   }
   .btn-primary{
     background: var(--line);
-    color: var(--bg);
+    color: var(--highlight);
   }
-  .btn-primary:hover{ background: var(--ink); border-color: var(--ink); }
+  .btn-primary:hover{ background: var(--ink); border-color: var(--ink); color:#fff; transform: translateY(-2px); }
   .btn-ghost{
-    background: transparent;
+    background: var(--paper);
     color: var(--text);
   }
-  .btn-ghost:hover{ background: var(--surface); }
+  .btn-ghost:hover{ background: var(--highlight-soft); border-color: var(--text); }
 
   .stats{
     display:grid;
     grid-template-columns: repeat(3, 1fr);
     border: 1px solid var(--line);
+    background: var(--paper);
   }
   .stat{
     padding: 18px 20px;
@@ -156,7 +165,7 @@
     font-family: var(--font-mono);
     font-size: 28px;
     font-weight: 700;
-    color: var(--text);
+    color: var(--ink);
     display:block;
   }
   .stat-label{
@@ -166,6 +175,7 @@
 
   /* ---------- section heading ---------- */
   .section{ padding: 58px 0; border-bottom: 1px solid var(--line-soft); }
+  .section-tint{ background: var(--surface); }
   .section-head{
     display:flex; align-items:baseline; justify-content:space-between;
     gap: 20px; margin-bottom: 28px; flex-wrap: wrap;
@@ -177,8 +187,7 @@
     font-family: var(--font-mono);
     font-size: 11.5px;
     color: var(--text-faint);
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
   }
 
   /* ---------- case cards ---------- */
@@ -197,7 +206,7 @@
     display:flex; flex-direction:column; gap:12px;
     transition: background .15s ease;
   }
-  .case-card:hover{ background: var(--surface); }
+  .case-card:hover{ background: var(--highlight-soft); }
   .case-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
   .case-id{
     font-family: var(--font-mono);
@@ -208,15 +217,15 @@
   .tag{
     font-family: var(--font-mono);
     font-size: 10px;
-    padding: 3px 9px;
-    border: 1px solid currentColor;
+    padding: 3px 10px;
+    border-radius: 999px;
     white-space: nowrap;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
+    font-weight: 700;
   }
-  .tag-spam{ color: var(--amber); }
-  .tag-privacy{ color: var(--red); }
-  .tag-consent{ color: var(--green-ok); }
+  .tag-spam{ background: var(--amber-soft); color: var(--amber); }
+  .tag-privacy{ background: var(--red-soft); color: var(--red); }
+  .tag-consent{ background: var(--green-soft); color: var(--green-ok); }
 
   .case-name{ font-size: 17px; font-weight: 800; margin:0; }
   .case-summary{ font-size: 13.5px; color: var(--text-muted); margin:0; flex-grow:1; }
@@ -232,6 +241,7 @@
   /* ---------- empty state ---------- */
   .empty{
     border: 1px dashed var(--line);
+    background: var(--paper);
     padding: 52px 30px;
     text-align: center;
   }
@@ -248,6 +258,7 @@
     grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
     gap: 0;
     border: 1px solid var(--line);
+    background: var(--paper);
   }
   .rule{
     padding: 20px;
@@ -257,16 +268,20 @@
   .rule .num{
     font-family: var(--font-mono);
     font-size: 11px;
-    color: var(--text-faint);
+    color: var(--ink);
+    font-weight: 700;
     display:block; margin-bottom: 10px;
   }
   .rule p{ margin:0; font-size: 13.5px; color: var(--text-muted); }
+  .rule a{ color: var(--ink); text-decoration: underline; font-size: 14px; }
 
   /* ---------- footer ---------- */
   footer{
     padding: 40px 0 60px;
     font-size: 13px;
     color: var(--text-faint);
+    background: var(--surface);
+    border-top: 1px solid var(--line);
   }
   footer .foot-links{ display:flex; gap:20px; margin-bottom: 18px; flex-wrap:wrap; }
   footer a{ text-decoration:none; color: var(--text-muted); }
@@ -293,26 +308,27 @@
 
 <div class="topbar">
   <div class="wrap topbar-inner">
-    <div class="brand"><span class="brand-mark">RECORD</span> آرشیو تبلیغات مزاحم</div>
+    <div class="brand"><span class="brand-mark">ثبت</span> آرشیو تبلیغات مزاحم</div>
     <nav class="topnav">
       <a href="#cases">پرونده‌ها</a>
       <a href="#rules">اصول</a>
-      <a href="CONTRIBUTING.md">مشارکت</a>
+      <a href="https://github.com/Deltafsociety/spam-ad/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">مشارکت</a>
+      <a href="#support">حمایت</a>
     </nav>
   </div>
 </div>
 
 <header class="hero">
   <div class="wrap">
-    <div class="stamp">public record — documentation, not accusation</div>
+    <div class="stamp">سند عمومی — مستندسازی، نه اتهام</div>
     <h1>هر تبلیغ مزاحم، یک <span class="redact-word">پرونده</span> است.</h1>
     <p class="lead">
       این‌جا آرشیویی عمومی از روش‌های تبلیغاتی کسب‌وکارهایی‌ست که کاربران آن‌ها را اسپم یا ناقض حریم خصوصی گزارش کرده‌اند؛
       هر مورد با مدرک، تاریخ و شرح واقعیت‌محور ثبت می‌شود، نه با قضاوت.
     </p>
     <div class="hero-ctas">
-      <a class="btn btn-primary" href="#cases">مشاهده پرونده‌ها</a>
-      <a class="btn btn-ghost" href="CONTRIBUTING.md">گزارش یک تبلیغ مزاحم</a>
+      <a class="btn btn-primary" href="https://github.com/Deltafsociety/spam-ad/issues/new" target="_blank" rel="noopener">گزارش یک تبلیغ مزاحم</a>
+      <a class="btn btn-ghost" href="#cases">مشاهده پرونده‌ها</a>
     </div>
 
     <div class="stats">
@@ -334,11 +350,11 @@
     </div>
   </section>
 
-  <section class="section" id="rules" style="border-bottom:none;">
+  <section class="section section-tint" id="rules">
     <div class="wrap">
       <div class="section-head">
         <h2>اصول این آرشیو</h2>
-        <span class="meta">non-negotiable</span>
+        <span class="meta">غیرقابل مذاکره</span>
       </div>
       <div class="rules">
         <div class="rule"><span class="num">۰۱</span><p>بدون مدرک تاریخ‌دار، هیچ پرونده‌ای ثبت نمی‌شود.</p></div>
@@ -348,15 +364,38 @@
       </div>
     </div>
   </section>
+
+  <section class="section" id="support" style="border-bottom:none;">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>حمایت از پروژه</h2>
+        <span class="meta">مستقل، بدون تبلیغ و بدون اسپانسر</span>
+      </div>
+      <p style="color:var(--text-muted); font-size:14.5px; max-width:60ch; margin:0 0 22px;">
+        این آرشیو رایگان و بدون تبلیغ اداره می‌شود. اگه می‌خوای از ادامه‌ی این کار حمایت کنی:
+      </p>
+      <div class="rules">
+        <div class="rule">
+          <span class="num">Low Signal</span>
+          <p><a href="https://daramet.com/lowsignal" target="_blank" rel="noopener">daramet.com/lowsignal</a></p>
+        </div>
+        <div class="rule">
+          <span class="num">Zist Digital</span>
+          <p><a href="https://donate.sudoshz.ir/u/zistdigital" target="_blank" rel="noopener">donate.sudoshz.ir/u/zistdigital</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
 </main>
 
 <footer>
   <div class="wrap">
     <div class="foot-links">
-      <a href="README.md">درباره پروژه</a>
-      <a href="CONTRIBUTING.md">راهنمای مشارکت</a>
-      <a href="entries/_template.md">قالب پرونده</a>
-      <a href="https://github.com/" id="repo-link">مخزن گیت‌هاب</a>
+      <a href="https://github.com/Deltafsociety/spam-ad" target="_blank" rel="noopener">مخزن گیت‌هاب</a>
+      <a href="https://github.com/Deltafsociety/spam-ad/issues/new" target="_blank" rel="noopener">گزارش تبلیغ مزاحم</a>
+      <a href="https://github.com/Deltafsociety/spam-ad/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">راهنمای مشارکت</a>
+      <a href="https://daramet.com/lowsignal" target="_blank" rel="noopener">حمایت مالی (Low Signal)</a>
+      <a href="https://donate.sudoshz.ir/u/zistdigital" target="_blank" rel="noopener">حمایت مالی (Zist Digital)</a>
     </div>
     <p class="disclaimer">
       محتوای این آرشیو مبتنی بر گزارش‌های کاربران است. نگهدارندگان پروژه تلاش می‌کنند مدارک را پیش از پذیرش بررسی کنند،
@@ -380,16 +419,17 @@
     const statusClass = entry.status === "answered" ? "status-answered" : "status-open";
     const statusLabel = entry.status === "answered" ? "پاسخ داده شده" : "بدون پاسخ";
     const href = entry.entryFile || "entries/_template.md";
+    const idNum = faDigits(String(entry.id ?? "").padStart(3,"0"));
     return `
       <a class="case-card" href="${href}">
         <div class="case-top">
-          <span class="case-id">CASE-${String(entry.id ?? "").padStart(3,"0")}</span>
+          <span class="case-id">پرونده ${idNum}</span>
           <span class="tag ${t.class}">${t.label}</span>
         </div>
         <h3 class="case-name">${entry.name}</h3>
         <p class="case-summary">${entry.summary || ""}</p>
         <div class="case-bottom">
-          <span>${entry.proofCount ?? 0} مدرک</span>
+          <span>${faDigits(entry.proofCount ?? 0)} مدرک</span>
           <span class="${statusClass}">${statusLabel}</span>
         </div>
       </a>`;
@@ -400,8 +440,8 @@
       <div class="empty" style="grid-column:1/-1">
         <div class="redact-strip"></div>
         <h3>هنوز پرونده‌ای ثبت نشده</h3>
-        <p>اولین گزارش این آرشیو می‌تونه مال تو باشه. مدرکتو آماده کن، راهنمای مشارکت رو بخون و یه Issue یا Pull Request بده.</p>
-        <a class="btn btn-primary" href="CONTRIBUTING.md">شروع گزارش‌دهی</a>
+        <p>اولین گزارش این آرشیو می‌تونه مال تو باشه. مدرکتو آماده کن و یه Issue توی گیت‌هاب باز کن.</p>
+        <a class="btn btn-primary" href="https://github.com/Deltafsociety/spam-ad/issues/new" target="_blank" rel="noopener">گزارش در گیت‌هاب</a>
       </div>`;
   }
 
