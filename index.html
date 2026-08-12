@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>آرشیو تبلیغات مزاحم و ناقض حریم خصوصی</title>
+<meta name="description" content="آرشیو عمومیِ مستندسازی‌شده از روش‌های تبلیغاتی کسب‌وکارهایی که کاربران آن‌ها را اسپم یا ناقض حریم خصوصی گزارش کرده‌اند." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #fefefd;
+    --paper: #ffffff;
+    --line: #111111;
+    --line-soft: #d8d6d0;
+    --surface: #f6f5f2;
+    --text: #111111;
+    --text-muted: #6b6a65;
+    --text-faint: #a3a19a;
+    --ink: #1a3fb8;
+    --red: #a3241f;
+    --amber: #8a5a0b;
+    --green-ok: #1f6b3f;
+    --radius: 3px;
+    --font-fa: 'Vazirmatn', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-fa);
+    line-height: 1.8;
+  }
+
+  a{ color: inherit; }
+  ::selection{ background: var(--line); color: #fff; }
+
+  :focus-visible{
+    outline: 2px solid var(--ink);
+    outline-offset: 3px;
+  }
+
+  .wrap{
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    position: sticky; top:0; z-index: 20;
+    background: rgba(254,254,253,0.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+  }
+  .topbar-inner{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 16px 0;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-weight:800; font-size: 15px;
+  }
+  .brand-mark{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    border: 1px solid var(--line);
+    padding: 2px 7px;
+    letter-spacing: 1px;
+  }
+  .topnav{ display:flex; gap:26px; font-size: 14px; }
+  .topnav a{ color: var(--text-muted); text-decoration:none; }
+  .topnav a:hover{ color: var(--ink); }
+
+  /* ---------- hero ---------- */
+  .hero{
+    padding: 76px 0 56px;
+    border-bottom: 1px solid var(--line);
+  }
+  .stamp{
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 1.5px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    display:inline-flex; align-items:center; gap:8px;
+    border: 1px solid var(--line-soft);
+    padding: 5px 12px;
+    margin-bottom: 26px;
+  }
+  .stamp::before{ content:"●"; color: var(--red); font-size: 8px; }
+
+  h1{
+    font-size: clamp(30px, 4.6vw, 48px);
+    line-height: 1.35;
+    margin: 0 0 20px;
+    font-weight: 900;
+    max-width: 16ch;
+    letter-spacing: -0.5px;
+  }
+  .redact-word{
+    position: relative;
+    display: inline-block;
+    padding: 0 8px;
+    background: var(--line);
+    color: var(--bg);
+  }
+
+  .hero p.lead{
+    color: var(--text-muted);
+    font-size: 16.5px;
+    max-width: 58ch;
+    margin: 0 0 34px;
+  }
+  .hero-ctas{ display:flex; gap:12px; flex-wrap:wrap; margin-bottom: 48px; }
+  .btn{
+    font-family: var(--font-fa);
+    font-weight: 700;
+    font-size: 14px;
+    padding: 12px 22px;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    cursor: pointer;
+    text-decoration:none;
+    display:inline-flex; align-items:center; gap:8px;
+    transition: background .15s ease, color .15s ease;
+  }
+  .btn-primary{
+    background: var(--line);
+    color: var(--bg);
+  }
+  .btn-primary:hover{ background: var(--ink); border-color: var(--ink); }
+  .btn-ghost{
+    background: transparent;
+    color: var(--text);
+  }
+  .btn-ghost:hover{ background: var(--surface); }
+
+  .stats{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    border: 1px solid var(--line);
+  }
+  .stat{
+    padding: 18px 20px;
+    border-inline-start: 1px solid var(--line);
+  }
+  .stat:first-child{ border-inline-start: none; }
+  .stat-num{
+    font-family: var(--font-mono);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text);
+    display:block;
+  }
+  .stat-label{
+    font-size: 12.5px;
+    color: var(--text-muted);
+  }
+
+  /* ---------- section heading ---------- */
+  .section{ padding: 58px 0; border-bottom: 1px solid var(--line-soft); }
+  .section-head{
+    display:flex; align-items:baseline; justify-content:space-between;
+    gap: 20px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .section-head h2{
+    font-size: 21px; margin:0; font-weight: 800;
+  }
+  .section-head .meta{
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* ---------- case cards ---------- */
+  .cases{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .case-card{
+    background: var(--paper);
+    padding: 22px;
+    text-decoration:none;
+    color: var(--text);
+    display:flex; flex-direction:column; gap:12px;
+    transition: background .15s ease;
+  }
+  .case-card:hover{ background: var(--surface); }
+  .case-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
+  .case-id{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 1px;
+  }
+  .tag{
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 3px 9px;
+    border: 1px solid currentColor;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .tag-spam{ color: var(--amber); }
+  .tag-privacy{ color: var(--red); }
+  .tag-consent{ color: var(--green-ok); }
+
+  .case-name{ font-size: 17px; font-weight: 800; margin:0; }
+  .case-summary{ font-size: 13.5px; color: var(--text-muted); margin:0; flex-grow:1; }
+  .case-bottom{
+    display:flex; justify-content:space-between; align-items:center;
+    font-family: var(--font-mono); font-size: 11.5px; color: var(--text-faint);
+    border-top: 1px dashed var(--line-soft);
+    padding-top: 12px;
+  }
+  .status-open{ color: var(--amber); }
+  .status-answered{ color: var(--green-ok); }
+
+  /* ---------- empty state ---------- */
+  .empty{
+    border: 1px dashed var(--line);
+    padding: 52px 30px;
+    text-align: center;
+  }
+  .empty .redact-strip{
+    width: 150px; height: 14px; background: var(--line);
+    margin: 0 auto 22px;
+  }
+  .empty h3{ margin: 0 0 10px; font-size: 18px; }
+  .empty p{ color: var(--text-muted); margin: 0 0 24px; max-width: 46ch; margin-inline: auto; font-size: 14px; }
+
+  /* ---------- rules ---------- */
+  .rules{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+    gap: 0;
+    border: 1px solid var(--line);
+  }
+  .rule{
+    padding: 20px;
+    border-inline-start: 1px solid var(--line);
+  }
+  .rule:first-child{ border-inline-start: none; }
+  .rule .num{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-faint);
+    display:block; margin-bottom: 10px;
+  }
+  .rule p{ margin:0; font-size: 13.5px; color: var(--text-muted); }
+
+  /* ---------- footer ---------- */
+  footer{
+    padding: 40px 0 60px;
+    font-size: 13px;
+    color: var(--text-faint);
+  }
+  footer .foot-links{ display:flex; gap:20px; margin-bottom: 18px; flex-wrap:wrap; }
+  footer a{ text-decoration:none; color: var(--text-muted); }
+  footer a:hover{ color: var(--ink); }
+  footer .disclaimer{ max-width: 70ch; line-height: 1.9; }
+
+  @media (max-width: 600px){
+    .hero{ padding: 54px 0 40px; }
+    .stats{ grid-template-columns: 1fr; }
+    .stat{ border-inline-start: none; border-top: 1px solid var(--line); }
+    .stat:first-child{ border-top: none; }
+    .section{ padding: 40px 0; }
+    .rules{ grid-template-columns: 1fr; }
+    .rule{ border-inline-start: none; border-top: 1px solid var(--line); }
+    .rule:first-child{ border-top: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap topbar-inner">
+    <div class="brand"><span class="brand-mark">RECORD</span> آرشیو تبلیغات مزاحم</div>
+    <nav class="topnav">
+      <a href="#cases">پرونده‌ها</a>
+      <a href="#rules">اصول</a>
+      <a href="CONTRIBUTING.md">مشارکت</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="stamp">public record — documentation, not accusation</div>
+    <h1>هر تبلیغ مزاحم، یک <span class="redact-word">پرونده</span> است.</h1>
+    <p class="lead">
+      این‌جا آرشیویی عمومی از روش‌های تبلیغاتی کسب‌وکارهایی‌ست که کاربران آن‌ها را اسپم یا ناقض حریم خصوصی گزارش کرده‌اند؛
+      هر مورد با مدرک، تاریخ و شرح واقعیت‌محور ثبت می‌شود، نه با قضاوت.
+    </p>
+    <div class="hero-ctas">
+      <a class="btn btn-primary" href="#cases">مشاهده پرونده‌ها</a>
+      <a class="btn btn-ghost" href="CONTRIBUTING.md">گزارش یک تبلیغ مزاحم</a>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><span class="stat-num" id="stat-cases">۰</span><span class="stat-label">پرونده ثبت‌شده</span></div>
+      <div class="stat"><span class="stat-num" id="stat-proof">۰</span><span class="stat-label">مدرک آرشیو شده</span></div>
+      <div class="stat"><span class="stat-num" id="stat-answered">۰</span><span class="stat-label">پاسخ کسب‌وکارها</span></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="section" id="cases">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>پرونده‌ها</h2>
+        <span class="meta" id="cases-meta">در حال بارگذاری...</span>
+      </div>
+      <div class="cases" id="cases-grid"></div>
+    </div>
+  </section>
+
+  <section class="section" id="rules" style="border-bottom:none;">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>اصول این آرشیو</h2>
+        <span class="meta">non-negotiable</span>
+      </div>
+      <div class="rules">
+        <div class="rule"><span class="num">۰۱</span><p>بدون مدرک تاریخ‌دار، هیچ پرونده‌ای ثبت نمی‌شود.</p></div>
+        <div class="rule"><span class="num">۰۲</span><p>لحن گزارش‌ها واقعیت‌محور است، نه اتهام حقوقی قطعی.</p></div>
+        <div class="rule"><span class="num">۰۳</span><p>اطلاعات شخصی افراد ثالث پیش از انتشار سیاه می‌شود.</p></div>
+        <div class="rule"><span class="num">۰۴</span><p>هر کسب‌وکار حق پاسخ و اصلاح دارد.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-links">
+      <a href="README.md">درباره پروژه</a>
+      <a href="CONTRIBUTING.md">راهنمای مشارکت</a>
+      <a href="entries/_template.md">قالب پرونده</a>
+      <a href="https://github.com/" id="repo-link">مخزن گیت‌هاب</a>
+    </div>
+    <p class="disclaimer">
+      محتوای این آرشیو مبتنی بر گزارش‌های کاربران است. نگهدارندگان پروژه تلاش می‌کنند مدارک را پیش از پذیرش بررسی کنند،
+      اما صحت هر مورد را به‌صورت مستقل تضمین نمی‌کنند. اگر فکر می‌کنید پرونده‌ای مربوط به کسب‌وکار شما نادرست یا گمراه‌کننده است،
+      از طریق Issue با ما تماس بگیرید تا پاسخ شما ثبت شود.
+    </p>
+  </div>
+</footer>
+
+<script>
+  const faDigits = n => String(n).replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[d]);
+
+  const tagInfo = {
+    spam: { label: "اسپم", class: "tag-spam" },
+    privacy: { label: "نقض حریم خصوصی", class: "tag-privacy" },
+    consent: { label: "بدون رضایت", class: "tag-consent" }
+  };
+
+  function caseCard(entry){
+    const t = tagInfo[entry.violationType] || tagInfo.spam;
+    const statusClass = entry.status === "answered" ? "status-answered" : "status-open";
+    const statusLabel = entry.status === "answered" ? "پاسخ داده شده" : "بدون پاسخ";
+    const href = entry.entryFile || "entries/_template.md";
+    return `
+      <a class="case-card" href="${href}">
+        <div class="case-top">
+          <span class="case-id">CASE-${String(entry.id ?? "").padStart(3,"0")}</span>
+          <span class="tag ${t.class}">${t.label}</span>
+        </div>
+        <h3 class="case-name">${entry.name}</h3>
+        <p class="case-summary">${entry.summary || ""}</p>
+        <div class="case-bottom">
+          <span>${entry.proofCount ?? 0} مدرک</span>
+          <span class="${statusClass}">${statusLabel}</span>
+        </div>
+      </a>`;
+  }
+
+  function emptyState(){
+    return `
+      <div class="empty" style="grid-column:1/-1">
+        <div class="redact-strip"></div>
+        <h3>هنوز پرونده‌ای ثبت نشده</h3>
+        <p>اولین گزارش این آرشیو می‌تونه مال تو باشه. مدرکتو آماده کن، راهنمای مشارکت رو بخون و یه Issue یا Pull Request بده.</p>
+        <a class="btn btn-primary" href="CONTRIBUTING.md">شروع گزارش‌دهی</a>
+      </div>`;
+  }
+
+  fetch("entries.json")
+    .then(r => r.ok ? r.json() : [])
+    .catch(() => [])
+    .then(entries => {
+      const grid = document.getElementById("cases-grid");
+      const meta = document.getElementById("cases-meta");
+      const proofTotal = entries.reduce((sum, e) => sum + (e.proofCount || 0), 0);
+      const answeredTotal = entries.filter(e => e.status === "answered").length;
+
+      document.getElementById("stat-cases").textContent = faDigits(entries.length);
+      document.getElementById("stat-proof").textContent = faDigits(proofTotal);
+      document.getElementById("stat-answered").textContent = faDigits(answeredTotal);
+
+      if(!entries.length){
+        grid.innerHTML = emptyState();
+        meta.textContent = "آرشیو خالی";
+        return;
+      }
+
+      meta.textContent = `${faDigits(entries.length)} پرونده`;
+      grid.innerHTML = entries
+        .slice()
+        .sort((a,b) => (b.id||0) - (a.id||0))
+        .map(caseCard)
+        .join("");
+    });
+</script>
+
+</body>
+</html>
