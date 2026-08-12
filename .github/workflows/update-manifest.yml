@@ -1,0 +1,38 @@
+name: Update proof manifest
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'proof/**'
+      - 'entries/**'
+      - 'scripts/scan-proof.js'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-manifest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Scan proof/ and build manifest
+        run: node scripts/scan-proof.js
+
+      - name: Commit manifest if it changed
+        run: |
+          if ! git diff --quiet -- proof-manifest.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add proof-manifest.json
+            git commit -m "chore: update proof-manifest.json [skip ci]"
+            git push
+          else
+            echo "No changes to proof-manifest.json"
+          fi
