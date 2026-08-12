@@ -320,7 +320,7 @@
 
 <header class="hero">
   <div class="wrap">
-    <div class="stamp">سند عمومی مستندسازی، بدون اتهام</div>
+    <div class="stamp">سند عمومی — مستندسازی، نه اتهام</div>
     <h1>هر تبلیغ مزاحم، یک <span class="redact-word">پرونده</span> است.</h1>
     <p class="lead">
       این‌جا آرشیویی عمومی از روش‌های تبلیغاتی کسب‌وکارهایی‌ست که کاربران آن‌ها را اسپم یا ناقض حریم خصوصی گزارش کرده‌اند؛
@@ -346,6 +346,7 @@
         <h2>پرونده‌ها</h2>
         <span class="meta" id="cases-meta">در حال بارگذاری...</span>
       </div>
+      <p class="meta" id="orphan-note" style="display:none; margin:-14px 0 22px; color:var(--red);"></p>
       <div class="cases" id="cases-grid"></div>
     </div>
   </section>
@@ -414,12 +415,20 @@
     consent: { label: "بدون رضایت", class: "tag-consent" }
   };
 
-  function caseCard(entry){
+  function slugFromEntry(entry){
+    const file = entry.entryFile || "";
+    const match = file.match(/entries\/(.+)\.md$/);
+    return match ? match[1] : entry.slug || null;
+  }
+
+  function caseCard(entry, proofBySlug){
     const t = tagInfo[entry.violationType] || tagInfo.spam;
     const statusClass = entry.status === "answered" ? "status-answered" : "status-open";
     const statusLabel = entry.status === "answered" ? "پاسخ داده شده" : "بدون پاسخ";
     const href = entry.entryFile || "entries/_template.md";
     const idNum = faDigits(String(entry.id ?? "").padStart(3,"0"));
+    const slug = slugFromEntry(entry);
+    const liveCount = slug && proofBySlug.has(slug) ? proofBySlug.get(slug) : (entry.proofCount ?? 0);
     return `
       <a class="case-card" href="${href}">
         <div class="case-top">
@@ -429,7 +438,7 @@
         <h3 class="case-name">${entry.name}</h3>
         <p class="case-summary">${entry.summary || ""}</p>
         <div class="case-bottom">
-          <span>${faDigits(entry.proofCount ?? 0)} مدرک</span>
+          <span>${faDigits(liveCount)} مدرک</span>
           <span class="${statusClass}">${statusLabel}</span>
         </div>
       </a>`;
@@ -445,18 +454,31 @@
       </div>`;
   }
 
-  fetch("entries.json")
-    .then(r => r.ok ? r.json() : [])
-    .catch(() => [])
-    .then(entries => {
+  Promise.all([
+    fetch("entries.json").then(r => r.ok ? r.json() : []).catch(() => []),
+    fetch("proof-manifest.json").then(r => r.ok ? r.json() : []).catch(() => [])
+  ]).then(([entries, manifest]) => {
       const grid = document.getElementById("cases-grid");
       const meta = document.getElementById("cases-meta");
-      const proofTotal = entries.reduce((sum, e) => sum + (e.proofCount || 0), 0);
+      const orphanNote = document.getElementById("orphan-note");
+
+      const proofBySlug = new Map(manifest.map(m => [m.slug, m.fileCount]));
+      const entrySlugs = new Set(entries.map(slugFromEntry).filter(Boolean));
+
+      const proofTotal = manifest.length
+        ? manifest.reduce((sum, m) => sum + m.fileCount, 0)
+        : entries.reduce((sum, e) => sum + (e.proofCount || 0), 0);
       const answeredTotal = entries.filter(e => e.status === "answered").length;
 
       document.getElementById("stat-cases").textContent = faDigits(entries.length);
       document.getElementById("stat-proof").textContent = faDigits(proofTotal);
       document.getElementById("stat-answered").textContent = faDigits(answeredTotal);
+
+      const orphanFolders = manifest.filter(m => !entrySlugs.has(m.slug));
+      if(orphanFolders.length){
+        orphanNote.style.display = "block";
+        orphanNote.textContent = `⚠ ${faDigits(orphanFolders.length)} پوشه‌ی مدرک (${orphanFolders.map(o => o.slug).join("، ")}) هنوز پرونده‌ی متنی ندارد — راهنمای مشارکت را ببینید.`;
+      }
 
       if(!entries.length){
         grid.innerHTML = emptyState();
@@ -468,7 +490,7 @@
       grid.innerHTML = entries
         .slice()
         .sort((a,b) => (b.id||0) - (a.id||0))
-        .map(caseCard)
+        .map(e => caseCard(e, proofBySlug))
         .join("");
     });
 </script>
